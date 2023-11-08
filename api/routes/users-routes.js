@@ -5,4 +5,4 @@ const usersController = require('../controllers/users-controllers');
 
 router.get('/', usersController.getUsers);
 
-module.exports = router
+module.exports = router;

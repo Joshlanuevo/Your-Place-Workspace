@@ -5,10 +5,12 @@ const app = express();
 
 const HttpError = require('./models/http-error');
 const usersRoutes = require('./routes/users-routes');
+const placesRoutes = require('./routes/places-routes');
 
 app.use(bodyParser.json());
 
 app.use('/api/users', usersRoutes);
+app.use('/api/places', placesRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
