@@ -1,7 +1,7 @@
 "use client"
 import Input from "@/app/shared/components/FormElements/Input";
 import Button from "@/app/shared/components/FormElements/Button";
-import { VALIDATOR_REQUIRE } from "@/app/shared/util/validators";
+import { VALIDATOR_REQUIRE } from "@/app/shared/util/validator";
 
 const NewPlace = () => {
     return ( 

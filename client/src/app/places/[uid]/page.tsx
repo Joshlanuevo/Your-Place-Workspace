@@ -5,7 +5,7 @@ import Modal from "@/app/shared/components/UIElements/Modal";
 import Input from "@/app/shared/components/FormElements/Input";
 import Button from "@/app/shared/components/FormElements/Button";
 import { useForm } from "@/app/shared/hooks/form-hook";
-import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validators";
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import { AiOutlineClose } from "react-icons/ai";
 
 
