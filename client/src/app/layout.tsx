@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import MainNavigation from './shared/components/Navigations/MainNavigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,8 +16,22 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en">  
+      <head>
+        <title>YourPlace</title>
+        <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlDVA68l66Pnt0YX_Q-WL1vO1HKdIdDd4&callback=Function.prototype">
+        </script>
+      </head>
+      <body className={inter.className}>
+        <div id="drawer-hook"></div>
+        <div id="backdrop-hook"></div>
+        <div id="modal-hook"></div>
+        <MainNavigation />
+        <main className='bg-[#2C2F33] min-h-screen'>
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
