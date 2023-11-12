@@ -1,12 +1,29 @@
 "use client"
+import { useState } from "react";
 import Link from "next/link";
+import Modal from "../shared/components/UIElements/Modal";
 import Card from "../shared/components/UIElements/Card";
 import Input from "../shared/components/FormElements/Input";
 import Button from "../shared/components/FormElements/Button";
 import { VALIDATOR_REQUIRE } from "../shared/util/validator";
 
 const AuthPage = () => {
+    const [showModal, setShowModal] = useState(false);
+
+    const openSignUpModal = () => {
+        setShowModal(true);
+    }
+
+    const closeSignUpModal = () => {
+        setShowModal(false);
+    }
+
     return (
+        <>
+        <Modal
+            show={showModal}
+            onCancel={closeSignUpModal}
+        >Keep moving forward!!!</Modal>
         <div className="flex justify-center items-center h-screen mt-10">
             <div className="w-80 sm:w-96">
                 <h1 className="text-2xl text-center text-white font-semibold mb-10">
@@ -48,12 +65,13 @@ const AuthPage = () => {
                 <div className="mt-6">
                     <Card className="bg-gray-300 p-4">
                         <h3 className="text-sm text-center text-black font-semibold">
-                            New to YourPlace? <Link href="/" className="text-blue-500">Create an account</Link>
+                            New to YourPlace? <Link href="/auth" className="text-blue-500" onClick={openSignUpModal}>Create an account</Link>
                         </h3>
                     </Card>
                 </div>
             </div>
         </div>
+        </>
     );
 }
 
