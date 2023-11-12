@@ -184,7 +184,7 @@ const deletePlace = async (req, res, next) => {
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    await place.remove({session: sess});
+    await place.deleteOne({session: sess});
     place.creator.places.pull(place);
     await place.creator.save({session: sess});
     await sess.commitTransaction();
