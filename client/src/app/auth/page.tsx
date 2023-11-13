@@ -23,7 +23,36 @@ const AuthPage = () => {
         <Modal
             show={showModal}
             onCancel={closeSignUpModal}
-        >Keep moving forward!!!</Modal>
+        >
+            <form>
+                <Input
+                    id="name"
+                    element="input"
+                    label="Name"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    onInput={() => console.log('wazzup')}
+                />
+                <Input
+                    id="email"
+                    element="input"
+                    type="email"
+                    label="Email"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    onInput={() => console.log('wazzup')}
+                />
+                <Input
+                    id="password"
+                    element="input"
+                    type="password"
+                    label="Password"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    onInput={() => console.log('wazzup')}
+                />
+                <Button wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
+                    SIGN IN
+                </Button>
+            </form>
+        </Modal>
         <div className="flex justify-center items-center h-screen mt-10">
             <div className="w-80 sm:w-96">
                 <h1 className="text-2xl text-center text-white font-semibold mb-10">
@@ -34,13 +63,6 @@ const AuthPage = () => {
                 </h1>
                 <Card className="bg-gray-300 p-4">
                     <form>
-                        <Input
-                            id="name"
-                            element="input"
-                            label="Name"
-                            validators={[VALIDATOR_REQUIRE()]}
-                            onInput={() => console.log('wazzup')}
-                        />
                         <Input
                             id="email"
                             element="input"
