@@ -132,7 +132,7 @@ const DUMMY_PLACES = [
                 errorText="Please enter a valid address."
                 onInput={inputHandler}
               />
-              <Button type="submit" className="mt-4" disabled={!formState.isValid} primary>
+              <Button type="submit" className="mt-4" disabled={!formState.isValid}>
                 ADD PLACE
               </Button>
             </form>

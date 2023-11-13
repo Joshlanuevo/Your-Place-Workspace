@@ -33,7 +33,7 @@ const Button = (props: any) => {
             ${props.circle ? 'text-white bg-[#5865F2] hover:bg-blue-500 rounded-full': ''}
             ${props.danger ? `bg-[#FF4C4C] hover:bg-[#f34343]` : ''}
             ${props.wide ? 'text-white bg-[#5865F2] hover:bg-blue-500 border-none w-full' : ''}
-            ${props.disabled ? 'bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed' : ''}
+            ${props.disabled ? 'bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed' : 'text-white bg-[#5865F2] hover:bg-blue-500'}
             `}
             type={props.type}
             onClick={props.onClick}

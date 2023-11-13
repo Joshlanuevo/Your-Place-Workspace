@@ -82,7 +82,7 @@ const AuthPage = () => {
                     validators={[VALIDATOR_REQUIRE()]}
                     onInput={inputHandler}
                 />
-                <Button wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
+                <Button type="submit" wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
                     SIGN IN
                 </Button>
             </form>
@@ -96,7 +96,7 @@ const AuthPage = () => {
                     </span>
                 </h1>
                 <Card className="bg-gray-300 p-4">
-                    <form>
+                    <form onSubmit={authSubmitHandler}>
                         <Input
                             id="email"
                             element="input"
@@ -113,7 +113,7 @@ const AuthPage = () => {
                             validators={[VALIDATOR_REQUIRE()]}
                             onInput={inputHandler}
                         />
-                        <Button wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
+                        <Button type="submit" wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
                             SIGN IN
                         </Button>
                     </form>
