@@ -6,6 +6,7 @@ import Card from "../shared/components/UIElements/Card";
 import Input from "../shared/components/FormElements/Input";
 import Button from "../shared/components/FormElements/Button";
 import { VALIDATOR_REQUIRE } from "../shared/util/validator";
+import { AiOutlineClose } from "react-icons/ai";
 
 const AuthPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -18,12 +19,22 @@ const AuthPage = () => {
         setShowModal(false);
     }
 
+    const closeButton = (
+        <div>
+          <AiOutlineClose className="header-style" onClick={closeSignUpModal} />
+        </div>
+    );
+
     return (
         <>
         <Modal
             show={showModal}
             onCancel={closeSignUpModal}
-        >
+            header={closeButton}
+            headerClass="flex justify-end pr-5"
+            contentClass="p-0"
+        >   
+            <h1 className="text-2xl font-bold mt-4 mb-6">Sign Up</h1>
             <form>
                 <Input
                     id="name"
