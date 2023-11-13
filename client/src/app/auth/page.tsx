@@ -1,15 +1,17 @@
 "use client"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import Modal from "../shared/components/UIElements/Modal";
 import Card from "../shared/components/UIElements/Card";
 import Input from "../shared/components/FormElements/Input";
 import Button from "../shared/components/FormElements/Button";
 import { useForm } from "../shared/hooks/form-hook";
+import { AuthContext } from "../shared/context/auth-context";
 import { VALIDATOR_REQUIRE } from "../shared/util/validator";
 import { AiOutlineClose } from "react-icons/ai";
 
 const AuthPage = () => {
+    const auth = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
 
     const [formState, inputHandler, setFormData] = useForm(
@@ -56,7 +58,7 @@ const AuthPage = () => {
                     element="input"
                     label="Name"
                     validators={[VALIDATOR_REQUIRE()]}
-                    onInput={() => console.log('wazzup')}
+                    onInput={inputHandler}
                 />
                 <Input
                     id="email"
@@ -64,7 +66,7 @@ const AuthPage = () => {
                     type="email"
                     label="Email"
                     validators={[VALIDATOR_REQUIRE()]}
-                    onInput={() => console.log('wazzup')}
+                    onInput={inputHandler}
                 />
                 <Input
                     id="password"
@@ -72,7 +74,7 @@ const AuthPage = () => {
                     type="password"
                     label="Password"
                     validators={[VALIDATOR_REQUIRE()]}
-                    onInput={() => console.log('wazzup')}
+                    onInput={inputHandler}
                 />
                 <Button wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
                     SIGN IN
