@@ -42,6 +42,12 @@ const AuthPage = () => {
         </div>
     );
 
+    const authSubmitHandler = e => {
+        e.preventDefault();
+        console.log(formState.inputs);
+        auth.login();
+    }
+
     return (
         <>
         <Modal
@@ -52,7 +58,7 @@ const AuthPage = () => {
             contentClass="p-0"
         >   
             <h1 className="text-2xl font-bold mt-4 mb-6">Sign Up</h1>
-            <form>
+            <form onSubmit={authSubmitHandler}>
                 <Input
                     id="name"
                     element="input"
@@ -97,7 +103,7 @@ const AuthPage = () => {
                             type="email"
                             label="Email"
                             validators={[VALIDATOR_REQUIRE()]}
-                            onInput={() => console.log('wazzup')}
+                            onInput={inputHandler}
                         />
                         <Input
                             id="password"
@@ -105,7 +111,7 @@ const AuthPage = () => {
                             type="password"
                             label="Password"
                             validators={[VALIDATOR_REQUIRE()]}
-                            onInput={() => console.log('wazzup')}
+                            onInput={inputHandler}
                         />
                         <Button wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
                             SIGN IN
