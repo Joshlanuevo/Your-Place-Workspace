@@ -11,9 +11,9 @@ const NavLinks: React.FC = () => {
 
   const navLinks = [
     { href: '/', name: 'All Users' },
-    { href: '/places/u1', name: 'My Places' },
+    auth.isLoggedIn && { href: '/places/u1', name: 'My Places' },
     { href: '/auth', name: auth.isLoggedIn ? 'Logout' : 'Sign in' },
-  ];
+  ].filter(Boolean) as { href: string; name: string }[]; 
 
   return (
     <ul className="nav-links list-none m-0 p-0 w-full h-full flex flex-col sm:flex-row justify-center items-center uppercase text-white">

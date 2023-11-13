@@ -13,6 +13,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const AuthPage = () => {
     const auth = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
+    const [isLoginInMode, setIsLoginMode] = useState(false);
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -96,6 +97,7 @@ const AuthPage = () => {
                     </span>
                 </h1>
                 <Card className="bg-gray-300 p-4">
+                    {!isLoginInMode && (
                     <form onSubmit={authSubmitHandler}>
                         <Input
                             id="email"
@@ -113,10 +115,16 @@ const AuthPage = () => {
                             validators={[VALIDATOR_REQUIRE()]}
                             onInput={inputHandler}
                         />
-                        <Button type="submit" wide className="mt-4 bg-blue-500 hover:bg-blue-700 text-white">
+                        <Button 
+                            type="submit" 
+                            disabled={!formState.isValid}
+                            wide 
+                            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white"
+                        >
                             SIGN IN
                         </Button>
                     </form>
+                    )}
                 </Card>
                 <div className="mt-6">
                     <Card className="bg-gray-300 p-4">
