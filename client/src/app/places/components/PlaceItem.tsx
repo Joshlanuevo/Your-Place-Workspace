@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Card from "@/app/shared/components/UIElements/Card";
 import Button from "@/app/shared/components/FormElements/Button";
 import Modal from "@/app/shared/components/UIElements/Modal";
 import Map from "@/app/shared/components/UIElements/Map";
+import { AuthContext } from "@/app/shared/context/auth-context";
 
 interface PlaceItemProps {
   id: string;
@@ -16,6 +17,7 @@ interface PlaceItemProps {
 }
 
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
+  const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
 
   const openMapHandler = () => setShowMap(true);
@@ -53,8 +55,12 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
             >
               VIEW ON MAP
             </Button>
-            <Button secondary>EDIT</Button>
-            <Button danger>DELETE</Button>
+            {auth.isLoggedIn && (
+              <Button secondary>EDIT</Button>
+            )}
+            {auth.isLoggedIn && (
+              <Button danger>DELETE</Button>
+            )}
           </div>
         </Card>
       </li>
