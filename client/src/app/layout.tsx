@@ -31,26 +31,6 @@ export default function RootLayout({
     setIsLoggedIn(false);
   }, []);
 
-  let routes;
-
-  if (isLoggedIn) {
-    routes = (
-      <>
-        <Link href="/">all users</Link>
-        <Link href="/places/u1">my places</Link>
-        <Link href="/auth">sign in</Link>
-        redirect("/")
-      </>
-    )
-  } else {
-    routes = (
-      <>
-        <Link href="/">all users</Link>
-        <Link href="/places/u1">my places</Link>
-      </>
-    )
-  }
-
   return (
     <html lang="en">  
       <head>

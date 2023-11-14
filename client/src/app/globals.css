@@ -33,6 +33,14 @@ body {
     font-weight: bold;
     font-size: 12.5px;
 }
+
+.nav-links button {
+    text-decoration: none;
+    padding: 0.5rem;
+    position: relative; 
+    font-weight: bold;
+    font-size: 12.5px;
+}
   
 .nav-links a:hover,
 .nav-links a:active,
