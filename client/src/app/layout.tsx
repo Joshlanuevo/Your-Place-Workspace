@@ -1,13 +1,11 @@
 "use client"
 // import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { useRouter } from 'next/router'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import { useRouter } from 'next/navigation';
+import { Inter } from 'next/font/google';
+import './globals.css';
 import MainNavigation from './shared/components/Navigations/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 import { useState, useCallback, useEffect } from 'react';
-import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,13 +20,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   const login = useCallback(() => {
     setIsLoggedIn(true);
+    router.push("/");
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    router.push("/auth");
   }, []);
 
   return (
