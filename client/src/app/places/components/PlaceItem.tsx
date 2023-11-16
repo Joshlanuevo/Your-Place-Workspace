@@ -19,10 +19,24 @@ interface PlaceItemProps {
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
   const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openMapHandler = () => setShowMap(true);
 
   const closeMapHandler = () => setShowMap(false);
+
+  const showDeleteWarningHandler = () => {
+    setShowConfirmModal(true);
+  };
+
+  const cancelDeleteHandler = () => {
+    setShowConfirmModal(false);
+  };
+
+  const confirmDeleteHandler = () => {
+    setShowConfirmModal(false);
+    console.log("DELETING...");
+  }
 
   return (
     <> 
@@ -37,6 +51,27 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
         <div className="h-15 w-full">
           <Map center={props.coordinates} zoom={16} />
         </div>
+      </Modal>
+      <Modal
+        show={showConfirmModal}
+        onCancel={cancelDeleteHandler}
+        header="Are you sure?"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteHandler}>
+              CANCEL
+            </Button>
+            <Button danger onClick={confirmDeleteHandler}>
+              DELETE
+            </Button>
+          </>
+        }
+      >
+        <p>
+          Do you want to proceed and delete this place? Please note that it
+          can't be undone thereafter.
+        </p>
       </Modal>
       <li className="place-item mt-8 mb-5 mx-5">
         <Card className="place-item__content bg-white">
@@ -59,7 +94,7 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
               <Button secondary>EDIT</Button>
             )}
             {auth.isLoggedIn && (
-              <Button danger>DELETE</Button>
+              <Button danger onClick={setShowConfirmModal}>DELETE</Button>
             )}
           </div>
         </Card>
