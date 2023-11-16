@@ -56,10 +56,10 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
         show={showConfirmModal}
         onCancel={cancelDeleteHandler}
         header="Are you sure?"
-        footerClass="place-item__modal-actions"
+        footerClass="text-right"
         footer={
           <>
-            <Button inverse onClick={cancelDeleteHandler}>
+            <Button secondary onClick={cancelDeleteHandler}>
               CANCEL
             </Button>
             <Button danger onClick={confirmDeleteHandler}>
