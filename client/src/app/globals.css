@@ -82,23 +82,23 @@ body {
 }
 
 .modal-enter {
-    transform: translateY(100%);
+    transform: translateX(100%);
     opacity: 0;
 }
   
 .modal-enter-active {
-    transform: translateY(100%);
+    transform: translateX(100%);
     opacity: 1;
     transition: transform 400ms ease-in-out, opacity 400ms ease-in-out;
 }
   
 .modal-exit {
-    transform: translateY(100%);
+    transform: translateX(100%);
     opacity: 1;
 }
   
 .modal-exit-active {
-    transform: translateY(100%);
+    transform: translateX(100%);
     opacity: 0;
     transition: transform 400ms ease-in-out, opacity 400ms ease-in-out;
 }
