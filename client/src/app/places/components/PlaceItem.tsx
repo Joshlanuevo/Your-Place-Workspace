@@ -19,11 +19,20 @@ interface PlaceItemProps {
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
   const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openMapHandler = () => setShowMap(true);
 
   const closeMapHandler = () => setShowMap(false);
+
+  const showUpdateModalHandler = () => {
+    setShowUpdateModal(true);
+  }
+
+  const cancelUpdateModalHandler = () => {
+    setShowUpdateModal(false);
+  }
 
   const showDeleteWarningHandler = () => {
     setShowConfirmModal(true);
@@ -51,6 +60,14 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
         <div className="h-15 w-full">
           <Map center={props.coordinates} zoom={16} />
         </div>
+      </Modal>
+      <Modal
+        show={showUpdateModal}
+        onCancel={cancelUpdateModalHandler}
+      >
+        <h1>
+          Update modal
+        </h1>
       </Modal>
       <Modal
         show={showConfirmModal}
@@ -91,10 +108,10 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
               VIEW ON MAP
             </Button>
             {auth.isLoggedIn && (
-              <Button secondary href={`/places/${props.id}`}>EDIT</Button>
+              <Button secondary onClick={showUpdateModalHandler}>EDIT</Button>
             )}
             {auth.isLoggedIn && (
-              <Button danger onClick={setShowConfirmModal}>DELETE</Button>
+              <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
             )}
           </div>
         </Card>
