@@ -3,12 +3,12 @@ import Link from "next/link";
 const Button = (props: any) => {
   if (props.href) {
     return (
-      <Link href={props.href}>
-        <a
+      <Link 
+          href={props.href}
           className={`
             ${props.size === 'small' ? 'text-sm' : ''}
             ${props.size === 'big' ? 'text-lg' : ''}
-            inline-block px-4 py-2 border rounded
+            inline-block px-4 py-2 border rounded mr-2
             ${props.primary ? 'text-white bg-[#5865F2] hover:bg-blue-500': ''}
             ${props.inverse ? 'text-primary border-primary bg-transparent' : 'text-white border-primary bg-primary'}
             ${props.secondary ? 'text-white bg-[#a7a7a7] hover:bg-[#b4b4b4]' : 'text-white border-primary bg-primary'}
@@ -17,7 +17,6 @@ const Button = (props: any) => {
           `}
         >
           {props.children}
-        </a>
       </Link>
     );
   }

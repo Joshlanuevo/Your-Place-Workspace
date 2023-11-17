@@ -91,7 +91,7 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
               VIEW ON MAP
             </Button>
             {auth.isLoggedIn && (
-              <Button secondary>EDIT</Button>
+              <Button secondary href={`/places/${props.id}`}>EDIT</Button>
             )}
             {auth.isLoggedIn && (
               <Button danger onClick={setShowConfirmModal}>DELETE</Button>
