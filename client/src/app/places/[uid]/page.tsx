@@ -49,7 +49,7 @@ const DUMMY_PLACES = [
       },
       creator: 'u1'
     },
-  ];
+];
 
   const UserPlacesPage = () => {
     const [formState, inputHandler] = useForm(
@@ -87,7 +87,7 @@ const DUMMY_PLACES = [
       </div>
     )
 
-    const placeSubmitHandler = event => {
+    const placeSubmitHandler = (event:any)=> {
       console.log("Submit button clicked"); // Check if this log appears in the console.
       event.preventDefault();
       console.log(formState); // send this to the backend!
