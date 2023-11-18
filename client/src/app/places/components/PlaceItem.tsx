@@ -13,7 +13,10 @@ interface PlaceItemProps {
   description: string;
   address: string;
   creatorId: string;
-  coordinates: string; 
+  coordinates: {
+    lat: number;
+    lng: number;
+  }; 
 }
 
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
