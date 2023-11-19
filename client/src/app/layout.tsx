@@ -20,18 +20,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router = useRouter();
+  const router = useRouter(); 
 
-  const signup = useCallback(async (email, password) => {
-    try {
-      setIsLoggedIn(true);
-      router.push("/");
-    } catch (error) {
-      console.error('Signup failed with error:', error);
-    }
-  }, []);  
-
-  const signin = useCallback((email, password) => {
+  const login = useCallback(() => {
     setIsLoggedIn(true);
     router.push("/");
   }, []);
@@ -54,7 +45,7 @@ export default function RootLayout({
         <div id="backdrop-hook"></div>
         <div id="modal-hook"></div>
         <AuthContext.Provider
-          value={{ isLoggedIn: isLoggedIn, signup: signup, signin:signin, logout: logout }}
+          value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
         >
         <MainNavigation />
         <main className='bg-[#2C2F33] min-h-screen'>

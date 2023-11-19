@@ -58,16 +58,11 @@ const AuthPage = () => {
   const closeSignUpModal = () => {
     setShowModal(false);
   };
-
-  const authSignUpHandler = async (event) => {
-    event.preventDefault();
-    await auth.signup(formState.inputs.email.value, formState.inputs.password.value);
-  }
   
 
-  const authSignInHandler = (event) => {
+  const authSubmitHandler = (event) => {
     event.preventDefault();
-    auth.signin();
+    auth.login();
   }
 
   return (
@@ -81,7 +76,7 @@ const AuthPage = () => {
       >
         <h1 className="text-2xl font-bold mt-4 mb-6">Sign Up</h1>
         <div>
-          <form onSubmit={authSignUpHandler}>
+          <form onSubmit={authSubmitHandler}>
             <Input
               element="input"
               id="name"
@@ -124,7 +119,7 @@ const AuthPage = () => {
             </span>
           </h1>
           <Card className="bg-gray-300 p-4">
-            <form onSubmit={authSignInHandler}>
+            <form onSubmit={authSubmitHandler}>
               <Input
                 element="input"
                 id="email"
