@@ -30,9 +30,8 @@ const AuthPage = () => {
   );
 
   const openSignUpModal = () => {
-    setIsLoginMode(prevMode => !prevMode);
-  
-    if (!isLoginMode) {
+    setShowModal(true);
+    if (!isLoginMode) { 
       setFormData(
         {
           ...formState.inputs,
@@ -52,16 +51,39 @@ const AuthPage = () => {
         false
       );
     }
-  
-    setShowModal(true);
+    setIsLoginMode(true);
   };
+
   const closeSignUpModal = () => {
     setShowModal(false);
-  };
-  
+  };  
 
-  const authSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
+
+    if (isLoginMode) {
+
+    } else {
+      try {
+        const response = await fetch("http://localhost:3000/api/users/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          })
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     auth.login();
   }
 
@@ -77,37 +99,37 @@ const AuthPage = () => {
         <h1 className="text-2xl font-bold mt-4 mb-6">Sign Up</h1>
         <div>
           <form onSubmit={authSubmitHandler}>
-            <Input
-              element="input"
-              id="name"
-              type="text"
-              label="Your Name"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a name."
-              onInput={inputHandler}
-            />
-            <Input
-              element="input"
-              id="email"
-              type="email"
-              label="E-Mail"
-              validators={[VALIDATOR_EMAIL()]}
-              errorText="Please enter a valid email address."
-              onInput={inputHandler}
-            />
-            <Input
-              element="input"
-              id="password"
-              type="password"
-              label="Password"
-              validators={[VALIDATOR_MINLENGTH(5)]}
-              errorText="Please enter a valid password, at least 5 characters."
-              onInput={inputHandler}
-            />
-            <Button type="submit" className="mt-4" disabled={!formState.isValid} wide>
-              SIGN UP
-            </Button>
-          </form>
+              <Input
+                element="input"
+                id="name"  // Add the name field
+                type="text"
+                label="Name"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter your name."
+                onInput={inputHandler}
+              />
+              <Input
+                element="input"
+                id="email"
+                type="email"
+                label="E-Mail"
+                validators={[VALIDATOR_EMAIL()]}
+                errorText="Please enter a valid email address."
+                onInput={inputHandler}
+              />
+              <Input
+                element="input"
+                id="password"
+                type="password"
+                label="Password"
+                validators={[VALIDATOR_MINLENGTH(5)]}
+                errorText="Please enter a valid password, at least 5 characters."
+                onInput={inputHandler}
+              />
+              <Button type="submit" className="mt-4" disabled={!formState.isValid} wide>
+                SIGN UP
+              </Button>
+            </form>
         </div>
       </Modal>
       <div className="flex justify-center items-center h-screen mt-10">
