@@ -8,7 +8,7 @@ import Button from "@/app/shared/components/FormElements/Button";
 
 const AuthForm = () => {
     const auth = useContext(AuthContext);
-    const [isLoginMode, setIsLoginMode] = useState(false);
+    const [isLoginMode, setIsLoginMode] = useState(true);
   
     const [formState, inputHandler, setFormData] = useForm(
       {
@@ -24,14 +24,8 @@ const AuthForm = () => {
       false
     );
   
-    const authSubmitHandler = (event) => {
-      event.preventDefault();
-      console.log(formState.inputs);
-      auth.login();
-    };
-  
-    const toggleMode = () => {
-      if (isLoginMode) {
+    const switchModeHandler = () => {
+      if (!isLoginMode) {
         setFormData(
           {
             ...formState.inputs,
@@ -51,8 +45,58 @@ const AuthForm = () => {
           false
         );
       }
-      setIsLoginMode((prevMode) => !prevMode);
+      setIsLoginMode(prevMode => !prevMode);
     };
+
+    const authSubmitHandler = async (event: React.FormEvent) => {
+      event.preventDefault();
+
+      console.log('Before fetch');
+    
+      if (isLoginMode) {
+        try {
+          const response = await fetch("http://localhost:5000/api/users/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: formState.inputs.email.value,
+              password: formState.inputs.password.value
+            })
+          });
+    
+          const responseData = await response.json();
+          console.log(responseData);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          const response = await fetch("http://localhost:5000/api/users/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              name: formState.inputs.name ? formState.inputs.name.value : '',
+              email: formState.inputs.email.value,
+              password: formState.inputs.password.value
+            })
+          });
+    
+          const responseData = await response.json();
+          console.log(responseData);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      console.log('After fetch');
+    
+      auth.login();
+    };
+    
   
     return (
       <>
@@ -89,7 +133,7 @@ const AuthForm = () => {
             id="password"
             type="password"
             label="Password"
-            validators={[VALIDATOR_MINLENGTH(5)]}
+            validators={[VALIDATOR_MINLENGTH(6)]}
             errorText="Please enter a valid password, at least 5 characters."
             onInput={inputHandler}
             />
@@ -102,7 +146,7 @@ const AuthForm = () => {
             </Button>
             <Button 
                 type="button" 
-                onClick={toggleMode} 
+                onClick={switchModeHandler} 
                 wide 
                 danger
             >

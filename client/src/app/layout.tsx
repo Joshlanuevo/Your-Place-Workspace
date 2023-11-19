@@ -23,12 +23,16 @@ export default function RootLayout({
   const router = useRouter(); 
 
   const login = useCallback(() => {
+    console.log('Logging in...');
     setIsLoggedIn(true);
+    console.log('isLoggedIn:', isLoggedIn);
     router.push("/");
   }, []);
-
+  
   const logout = useCallback(() => {
+    console.log('Logging out...');
     setIsLoggedIn(false);
+    console.log('isLoggedIn:', isLoggedIn);
     router.push("/auth");
   }, []);
 
