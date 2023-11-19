@@ -56,6 +56,7 @@ const Input = (props: any) => {
         placeholder={props.placeholder}
         onChange={changeHandler}
         onBlur={touchHandler}
+        autoComplete="off"
         value={inputState.value}
         className="w-full border mb-4 rounded-sm border-gray-400 bg-white py-1 px-2 focus:bg-gray-300 focus:border-purple-700"
       />

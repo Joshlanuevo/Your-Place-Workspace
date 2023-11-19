@@ -101,7 +101,7 @@ const AuthPage = () => {
           <form onSubmit={authSubmitHandler}>
               <Input
                 element="input"
-                id="name"  // Add the name field
+                id="name"  
                 type="text"
                 label="Name"
                 validators={[VALIDATOR_REQUIRE()]}
