@@ -32,7 +32,7 @@ const Button = (props: any) => {
         ${props.secondary ? 'text-white bg-[#a7a7a7] hover:bg-[#b4b4b4]' : 'text-white border-primary bg-primary'}
         ${props.circle ? 'text-white bg-[#5865F2] hover:bg-blue-500 rounded-full': ''}
         ${props.danger ? `bg-[#FF4C4C] hover:bg-red-600` : ''}
-        ${props.wide ? 'border-none w-full' : ''}
+        ${props.wide ? 'border-none w-full mb-4' : ''}
         ${props.disabled ? 'bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed' : 'text-white bg-[#5865F2] hover:bg-blue-500'}
       `}
       type={props.type}
