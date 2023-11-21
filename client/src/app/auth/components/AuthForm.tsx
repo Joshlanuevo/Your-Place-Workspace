@@ -106,6 +106,7 @@ const AuthForm = () => {
   
     return (
       <>
+        {isLoading && <LoadingSpinner asOverlay />}
         <h1 className="text-2xl text-center text-gray-700 font-semibold mb-10">
               {isLoginMode ? "Login to" : "Signup to"}
               <span className="text-2xl text-white bg-[#5865F2] mx-2 py-2 px-4 rounded-lg font-bold">
