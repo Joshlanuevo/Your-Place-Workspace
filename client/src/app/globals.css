@@ -108,5 +108,27 @@ body {
     font-size: 20px;
     cursor: pointer;
 }
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+.lds-dual-ring {
+    @apply inline-block w-16 h-16;
+  
+    &:after {
+      @apply content-[''] block w-12 h-12 m-1 rounded-full border-4 border-solid border-purple-800 border-purple-800-transparent animation-spin duration-1200 linear infinite;
+    }
+}
+  
+.loading-spinner__overlay {
+    @apply h-full w-full absolute top-0 left-0 bg-white bg-opacity-90 flex justify-center items-center;
+}
+  
   
   
