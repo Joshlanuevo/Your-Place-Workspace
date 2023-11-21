@@ -5,6 +5,8 @@ import { AuthContext } from "@/app/shared/context/auth-context";
 import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import Input from "@/app/shared/components/FormElements/Input";
 import Button from "@/app/shared/components/FormElements/Button";
+import LoadingSpinner from "@/app/shared/components/UIElements/LoadingSpinner";
+import ErrorModal from "@/app/shared/components/UIElements/ErrorModal";
 
 const AuthForm = () => {
     const auth = useContext(AuthContext);
