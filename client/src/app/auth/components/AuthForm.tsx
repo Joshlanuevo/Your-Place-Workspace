@@ -91,6 +91,9 @@ const AuthForm = () => {
           });
     
           const responseData = await response.json();
+          if (!response.ok) {
+            throw new Error(responseData.message);
+          }
           console.log(responseData);
           setIsLoading(false);
           auth.login();
@@ -103,9 +106,14 @@ const AuthForm = () => {
 
       console.log('After fetch');
     };
+
+    const errorHandler = () => {
+      setError(null);
+    }
   
     return (
       <>
+        <ErrorModal error={error} onClear={errorHandler} />
         {isLoading && <LoadingSpinner asOverlay />}
         <h1 className="text-2xl text-center text-gray-700 font-semibold mb-10">
               {isLoginMode ? "Login to" : "Signup to"}
