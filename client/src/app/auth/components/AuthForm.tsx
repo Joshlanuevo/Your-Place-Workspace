@@ -58,7 +58,7 @@ const AuthForm = () => {
       if (isLoginMode) {
         try {
           const responseData = await sendRequest(
-            "http://localhost:5000/api/users/login", 
+            "http://localhost:5000/api/users/login",
             "POST",
             JSON.stringify({
               email: formState.inputs.email.value,
@@ -68,9 +68,12 @@ const AuthForm = () => {
               "Content-Type": "application/json"
             }
           );
-
+    
+          console.log("Login response data:", responseData);
           auth.login(responseData.user.id);
-        } catch (err) {}
+        } catch (err) {
+          console.error("Login error:", err);
+        }
       } else {
         try {
           const responseData = await sendRequest(
