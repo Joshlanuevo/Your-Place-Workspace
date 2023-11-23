@@ -1,16 +1,20 @@
 "use client"
-import { useState, useCallback, useReducer } from "react";
+import { useState, useContext } from "react";
 import PlaceList from "../components/PlaceList";
 import Modal from "@/app/shared/components/UIElements/Modal";
 import Input from "@/app/shared/components/FormElements/Input";
 import Button from "@/app/shared/components/FormElements/Button";
+import ErrorModal from "@/app/shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "@/app/shared/components/UIElements/LoadingSpinner";
 import { useForm } from "@/app/shared/hooks/form-hook";
 import { useHttpClient } from "@/app/shared/hooks/http-hook";
+import { AuthContext } from "@/app/shared/context/auth-context";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import { AiOutlineClose } from "react-icons/ai";
 
 
 const UserPlacesPage = () => {
+  const auth = useContext(AuthContext);
   const {isLoading, error, sendRequest, clearError} = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -49,17 +53,24 @@ const UserPlacesPage = () => {
 
   const placeSubmitHandler = async (event:any)=> {
     event.preventDefault();
-    sendRequest("http://localhost:5000/api/places", "POST", JSON.stringify({
-      title: formState.inputs.title.value,
-      description: formState.inputs.description.value,
-      address: formState.inputs.address.value,
-      creator:
-    }), {});
+    try {
+      await sendRequest(
+        "http://localhost:5000/api/places", 
+        "POST", 
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          address: formState.inputs.address.value,
+          creator: auth.userId
+        })
+      )
+    } catch (err) {}
   };
     
   
   return (
     <>
+      <ErrorModal error={error} onClear={clearError}/>
       <Modal 
         show={showModal} 
         onCancel={closeAddPlaceModal} 
@@ -70,6 +81,7 @@ const UserPlacesPage = () => {
         <div className="p-8">
           <h1 className="text-2xl font-bold mb-4">Add New Place</h1>
           <form onSubmit={placeSubmitHandler}>
+            {isLoading && <LoadingSpinner asOverlay />}
             <Input
               id="title"
               element="input"
