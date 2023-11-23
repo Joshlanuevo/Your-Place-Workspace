@@ -1,5 +1,5 @@
 "use client"
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import PlaceList from "../components/PlaceList";
 import Modal from "@/app/shared/components/UIElements/Modal";
@@ -13,39 +13,10 @@ import { AuthContext } from "@/app/shared/context/auth-context";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import { AiOutlineClose } from "react-icons/ai";
 
-const DUMMY_PLACES = [
-  {
-    id: 'p1',
-    title: 'Empire State Building',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-    address: '20 W 34th St, New York, NY 10001',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878584
-    },
-    creator: 'u1'
-  },
-  {
-    id: 'p2',
-    title: 'Emp. State Building',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-    address: '20 W 34th St, New York, NY 10001',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878584
-    },
-    creator: 'u2'
-  }
-];
-
-
 const UserPlacesPage = () => {
   const auth = useContext(AuthContext);
   const router = useRouter();
+  const [loadedPlaces, setLoadedPlaces] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -154,7 +125,7 @@ const UserPlacesPage = () => {
           </Modal>
         </form>
       )}
-      <PlaceList items={DUMMY_PLACES} />
+      <PlaceList items={loadedPlaces} />
     </>
   );
 };
