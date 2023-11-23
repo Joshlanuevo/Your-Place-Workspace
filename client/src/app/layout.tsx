@@ -25,7 +25,7 @@ export default function RootLayout({
 
   const login = useCallback((uid) => {
     setIsLoggedIn(true);
-    setUserId(uid)
+    setUserId(uid);
     router.push("/");
   }, []);
   

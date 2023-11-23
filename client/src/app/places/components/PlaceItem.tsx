@@ -223,7 +223,7 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
           can't be undone thereafter.
         </p>
       </Modal>
-      <li className="place-item mt-8 mb-5 mx-5">
+      <li className="place-item mt-8 mb-5 mx-5" key={props.id}>
         <Card className="place-item__content bg-white">
           <div className="place-item__image">
             <img className="w-full h-32 object-cover" src={props.image} alt={props.title} />
