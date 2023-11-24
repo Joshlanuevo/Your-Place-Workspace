@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import PlaceItem from "./PlaceItem";
 import Card from "@/app/shared/components/UIElements/Card";
 import Button from "@/app/shared/components/FormElements/Button";
+import { AuthContext } from "@/app/shared/context/auth-context";
 
 interface PlaceListProps {
   items: {
@@ -19,14 +20,18 @@ interface PlaceListProps {
 }
 
 const PlaceList: React.FC<PlaceListProps> = (props) => {
+  const auth = useContext(AuthContext);
+
   if (props.items.length === 0) {
     return (
     <div className="mt-20 flex items-center justify-center">
       <Card className="w-96 p-8 text-center bg-gray-200">
-        <h2 className="text-2xl font-bold mb-4">No places found. Maybe create one?</h2>
-        <Button to="/places/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Share Place
-        </Button>
+        <h2 className="text-2xl font-bold m-4">No places found.</h2>
+        {auth.isLoggedIn && (
+          <Button to="/places/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Share Place
+          </Button>
+        )}
       </Card>
     </div>
     );
