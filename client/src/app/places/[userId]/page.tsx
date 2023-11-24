@@ -1,6 +1,6 @@
 "use client"
 import { useState, useContext, useEffect } from "react";
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import PlaceList from "../components/PlaceList";
 import Modal from "@/app/shared/components/UIElements/Modal";
 import Input from "@/app/shared/components/FormElements/Input";
@@ -16,6 +16,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const UserPlacesPage = () => {
   const auth = useContext(AuthContext);
   const router = useRouter();
+  const userId = usePathname().split('/').pop();
   const [loadedPlaces, setLoadedPlaces] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
@@ -38,6 +39,17 @@ const UserPlacesPage = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/places/user/${userId}`
+        );
+        setLoadedPlaces(responseData.places);
+      } catch (err) {}
+    };
+    fetchPlaces();
+  }, [sendRequest, userId]);
 
   const openAddPlaceModal = () => {
     setShowModal(true);

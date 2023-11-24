@@ -6,7 +6,7 @@ import Button from "@/app/shared/components/FormElements/Button";
 interface PlaceListProps {
   items: {
     id: string;
-    imageUrl: string;
+    image: string;
     title: string;
     description: string;
     address: string;
@@ -38,7 +38,7 @@ const PlaceList: React.FC<PlaceListProps> = (props) => {
         <PlaceItem
           key={place.id}
           id={place.id}
-          image={place.imageUrl}
+          image={place.image}
           title={place.title}
           description={place.description}
           address={place.address}

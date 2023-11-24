@@ -23,7 +23,7 @@ export default function RootLayout({
   const [userId, setUserId] = useState(false);
   const router = useRouter(); 
 
-  const login = useCallback((uid) => {
+  const login = useCallback(uid => {
     setIsLoggedIn(true);
     setUserId(uid);
     router.push("/");
@@ -48,7 +48,12 @@ export default function RootLayout({
         <div id="backdrop-hook"></div>
         <div id="modal-hook"></div>
         <AuthContext.Provider
-          value={{ isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout }}
+          value={{
+            isLoggedIn: isLoggedIn,
+            userId: userId,
+            login: login,
+            logout: logout
+          }}
         >
         <MainNavigation />
         <main className='bg-[#2C2F33] min-h-screen'>
