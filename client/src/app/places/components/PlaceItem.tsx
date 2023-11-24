@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Card from "@/app/shared/components/UIElements/Card";
 import Button from "@/app/shared/components/FormElements/Button";
 import Modal from "@/app/shared/components/UIElements/Modal";
@@ -8,49 +8,9 @@ import Map from "@/app/shared/components/UIElements/Map";
 import Input from "@/app/shared/components/FormElements/Input";
 import { AuthContext } from "@/app/shared/context/auth-context";
 import { useForm } from "@/app/shared/hooks/form-hook";
+import { useHttpClient } from "@/app/shared/hooks/http-hook";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
-
-const DUMMY_PLACES = [
-  {
-    id: 'p1',
-    title: 'Mandaluyong City',
-    description: '',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-    address: 'Mandaluyong City, Metro Manila',
-    location: {
-      lat: 14.57937439855522,
-      lng: 121.03541430501816
-    },
-    creator: 'u1'
-  },
-  {
-    id: 'p2',
-    title: 'Emp. State Building!!!',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-    address: '20 W 34th St, New York, NY 10001',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878584
-    },
-    creator: 'u2'
-  },
-  {
-    id: 'p3',
-    title: 'Empire State Building!!!!',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-    address: '20 W 34th St, New York, NY 10001',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878584
-    },
-    creator: 'u1'
-  },
-];
+import LoadingSpinner from "@/app/shared/components/UIElements/LoadingSpinner";
 
 interface PlaceItemProps {
   id: string;
@@ -67,8 +27,10 @@ interface PlaceItemProps {
 
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
   const auth = useContext(AuthContext);
-  const placeId = useParams().placeId;
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const placeId = usePathname().split('/').pop();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [loadedPlace, setLoadedPlace] = useState();
   const [showMap, setShowMap] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -87,26 +49,31 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     false
   );
 
-  const identifiedPlace = DUMMY_PLACES.find(p => p.id === placeId);
-
   useEffect(() => {
-    if (identifiedPlace) {
-      setFormData(
-        {
-          title: {
-            value: identifiedPlace.title,
-            isValid: true
+    const fetchPlace = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/places/${placeId}`
+        );
+        setLoadedPlace(responseData.place);
+        setFormData(
+          {
+            title: {
+              value: responseData.place.title,
+              isValid: true
+            },
+            description: {
+              value: responseData.place.description,
+              isValid: true
+            }
           },
-          description: {
-            value: identifiedPlace.description,
-            isValid: true
-          }
-        },
-        true
-      );
-    }
-    setIsLoading(false);
-  }, [setFormData, identifiedPlace]);
+          true
+        );
+
+      } catch (err) {}
+    };
+    fetchPlace();
+  }, [sendRequest, placeId, setFormData]);
 
   const openMapHandler = () => setShowMap(true);
 
@@ -116,10 +83,22 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     setShowUpdateModal(true);
   }
 
-  const placeUpdateSubmitHandler = (event: React.FormEvent) => {
+  const placeUpdateSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Form State:", formState);
-    console.log("Updating place...", formState.inputs);
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/places/${placeId}`,
+        'PATCH',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      router.push('/places' + '/' + auth.userId);
+    } catch (err) {}
   };
 
   const cancelUpdateModalHandler = () => {
@@ -139,20 +118,20 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     console.log("DELETING...");
   }
 
-  // if (!identifiedPlace) {
-  //   return (
-  //     <div className="center">
-  //       <Card>
-  //         <h2>Could not find place!</h2>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
-
   if (isLoading) {
     return (
-      <div className="center pt-20">
-        <h2>Loading...</h2>
+      <div className="center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!loadedPlace && !error) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
   }
