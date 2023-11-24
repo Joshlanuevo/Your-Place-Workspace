@@ -15,8 +15,8 @@ const NavLinks: React.FC = () => {
         <Link href="/">all users</Link>
       </li>
       {auth.isLoggedIn && (
-        <li className={`mb-2 sm:mb-0 sm:mr-2 ${isActive("/places/u1") ? 'text-[#5865F2]' : ''}`}>
-          <Link href="/places/u1">my places</Link>
+        <li className={`mb-2 sm:mb-0 sm:mr-2 ${isActive(`/places/${auth.userId}`) ? 'text-[#5865F2]' : ''}`}>
+          <Link href={`/places/${auth.userId}`}>my places</Link>
         </li>
       )}
       {!auth.isLoggedIn && (

@@ -96,7 +96,7 @@ const AuthForm = () => {
   
     return (
       <>
-        <ErrorModal error={error} onClear={clearError} />
+        {/* <ErrorModal error={error} onClear={clearError} /> */}
         {isLoading && <LoadingSpinner asOverlay />}
         <h1 className="text-2xl text-center text-gray-700 font-semibold mb-10">
               {isLoginMode ? "Login to" : "Signup to"}

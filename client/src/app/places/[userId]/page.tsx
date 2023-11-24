@@ -1,6 +1,6 @@
 "use client"
 import { useState, useContext, useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import PlaceList from "../components/PlaceList";
 import Modal from "@/app/shared/components/UIElements/Modal";
 import Input from "@/app/shared/components/FormElements/Input";
@@ -37,6 +37,7 @@ const UserPlacesPage = () => {
   );
 
   const [showModal, setShowModal] = useState(false);
+
 
   const openAddPlaceModal = () => {
     setShowModal(true);
@@ -125,7 +126,9 @@ const UserPlacesPage = () => {
           </Modal>
         </form>
       )}
-      <PlaceList items={loadedPlaces} />
+      {!isLoading && loadedPlaces && (
+        <PlaceList items={loadedPlaces} />
+      )}
     </>
   );
 };
