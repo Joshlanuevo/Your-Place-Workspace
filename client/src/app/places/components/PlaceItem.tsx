@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Card from "@/app/shared/components/UIElements/Card";
 import Button from "@/app/shared/components/FormElements/Button";
 import Modal from "@/app/shared/components/UIElements/Modal";
@@ -60,20 +60,21 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
           {
             title: {
               value: responseData.place.title,
-              isValid: true
+              isValid: true,
             },
             description: {
               value: responseData.place.description,
-              isValid: true
-            }
+              isValid: true,
+            },
           },
           true
         );
-
+  
       } catch (err) {}
     };
     fetchPlace();
   }, [sendRequest, placeId, setFormData]);
+  
 
   const openMapHandler = () => setShowMap(true);
 
