@@ -11,6 +11,7 @@ import { useForm } from "@/app/shared/hooks/form-hook";
 import { useHttpClient } from "@/app/shared/hooks/http-hook";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import LoadingSpinner from "@/app/shared/components/UIElements/LoadingSpinner";
+import ErrorModal from "@/app/shared/components/UIElements/ErrorModal";
 
 interface PlaceItemProps {
   id: string;
@@ -48,34 +49,6 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     },
     false
   );
-
-  useEffect(() => {
-    const fetchPlace = async () => {
-      try {
-        const responseData = await sendRequest(
-          `http://localhost:5000/api/places/${placeId}`
-        );
-        setLoadedPlace(responseData.place);
-        setFormData(
-          {
-            title: {
-              value: responseData.place.title,
-              isValid: true,
-            },
-            description: {
-              value: responseData.place.description,
-              isValid: true,
-            },
-          },
-          true
-        );
-  
-      } catch (err) {}
-    };
-    fetchPlace();
-  }, [sendRequest, placeId, setFormData]);
-  
-
   const openMapHandler = () => setShowMap(true);
 
   const closeMapHandler = () => setShowMap(false);
@@ -86,22 +59,7 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
 
   const placeUpdateSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      await sendRequest(
-        `http://localhost:5000/api/places/${placeId}`,
-        'PATCH',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value
-        }),
-        {
-          'Content-Type': 'application/json'
-        }
-      );
-      router.push('/places' + '/' + auth.userId);
-    } catch (err) {}
   };
-
   const cancelUpdateModalHandler = () => {
     setShowUpdateModal(false);
   }
@@ -114,10 +72,16 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log("DELETING...");
-  }
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/places/${props.id}`,
+        'DELETE'
+      );
+      props.onDelete(props.id);
+    } catch (err) {}
+  };
 
   if (isLoading) {
     return (
@@ -127,18 +91,9 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
     );
   }
 
-  if (!loadedPlace && !error) {
-    return (
-      <div className="center">
-        <Card>
-          <h2>Could not find place!</h2>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <> 
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -155,32 +110,34 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
         show={showUpdateModal}
         onCancel={cancelUpdateModalHandler}
       >
-      <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
-        <Input
-          id="title"
-          element="input"
-          type="text"
-          label="Title"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid title."
-          onInput={inputHandler}
-          initialValue={formState.inputs.title.value}
-          initialValid={formState.inputs.title.isValid}
-        />
-        <Input
-          id="description"
-          element="textarea"
-          label="Description"
-          validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="Please enter a valid description (min. 5 characters)."
-          onInput={inputHandler}
-          initialValue={formState.inputs.description.value}
-          initialValid={formState.inputs.description.isValid}
-        />
-        <Button type="submit" disabled={!formState.isValid}>
-          UPDATE PLACE
-        </Button>
-      </form>
+      <div>
+        <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
+          <Input
+            id="title"
+            element="input"
+            type="text"
+            label="Title"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter a valid title."
+            onInput={inputHandler}
+            initialValue={formState.inputs.title.value}
+            initialValid={formState.inputs.title.isValid}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            label="Description"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please enter a valid description (min. 5 characters)."
+            onInput={inputHandler}
+            initialValue={formState.inputs.description.value}
+            initialValid={formState.inputs.description.isValid}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
+            UPDATE PLACE
+          </Button>
+        </form>
+      </div>
       </Modal>
       <Modal
         show={showConfirmModal}
@@ -220,10 +177,10 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
             >
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && (
+            {auth.userId === props.creatorId && (
               <Button secondary onClick={showUpdateModalHandler}>EDIT</Button>
             )}
-            {auth.isLoggedIn && (
+            {auth.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
             )}
           </div>

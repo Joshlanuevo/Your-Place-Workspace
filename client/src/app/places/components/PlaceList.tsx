@@ -27,11 +27,6 @@ const PlaceList: React.FC<PlaceListProps> = (props) => {
     <div className="mt-20 flex items-center justify-center">
       <Card className="w-96 p-8 text-center bg-gray-200">
         <h2 className="text-2xl font-bold m-4">No places found.</h2>
-        {auth.isLoggedIn && (
-          <Button to="/places/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Share Place
-          </Button>
-        )}
       </Card>
     </div>
     );
@@ -49,6 +44,7 @@ const PlaceList: React.FC<PlaceListProps> = (props) => {
           address={place.address}
           creatorId={place.creator}
           coordinates={place.location}
+          onDelete={props.onDeletePlace}
         />
       ))}
     </ul>

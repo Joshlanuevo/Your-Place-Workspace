@@ -83,10 +83,17 @@ const UserPlacesPage = () => {
     } catch (err) {}
   };
 
+    const placeDeletedHandler = deletedPlaceId => {
+    setLoadedPlaces(prevPlaces =>
+      prevPlaces.filter(place => place.id !== deletedPlaceId);
+    );
+  };
+
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
       {auth.isLoggedIn && (
+        <>
         <form onSubmit={placeSubmitHandler}>
           <div className="pt-8 md:pt-10 relative">
             <div className="absolute top-0 right-0 mr-5">
@@ -137,9 +144,10 @@ const UserPlacesPage = () => {
             </div>
           </Modal>
         </form>
+        </>
       )}
       {!isLoading && loadedPlaces && (
-        <PlaceList items={loadedPlaces} />
+        <PlaceList items={loadedPlaces} onDeletePlace={placeDeletedHandler} />
       )}
     </>
   );
