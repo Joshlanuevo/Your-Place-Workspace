@@ -13,7 +13,7 @@ import { AuthContext } from "@/app/shared/context/auth-context";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "@/app/shared/util/validator";
 import { AiOutlineClose } from "react-icons/ai";
 
-const UserPlacesPage = () => {
+const UserPlacesPage = (props) => {
   const auth = useContext(AuthContext);
   const router = useRouter();
   const userId = usePathname().split('/').pop();
@@ -85,7 +85,7 @@ const UserPlacesPage = () => {
 
     const placeDeletedHandler = deletedPlaceId => {
     setLoadedPlaces(prevPlaces =>
-      prevPlaces.filter(place => place.id !== deletedPlaceId);
+      prevPlaces.filter(place => place.id !== deletedPlaceId)
     );
   };
 
@@ -95,13 +95,15 @@ const UserPlacesPage = () => {
       {auth.isLoggedIn && (
         <>
         <form onSubmit={placeSubmitHandler}>
-          <div className="pt-8 md:pt-10 relative">
-            <div className="absolute top-0 right-0 mr-5">
-              <Button circle onClick={openAddPlaceModal}>
-                +
-              </Button>
+          {auth.userId === userId && (
+            <div className="pt-8 md:pt-10 relative">
+              <div className="absolute top-0 right-0 mr-5">
+                <Button circle onClick={openAddPlaceModal}>
+                  +
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
           <Modal
             show={showModal}
             onCancel={closeAddPlaceModal}
