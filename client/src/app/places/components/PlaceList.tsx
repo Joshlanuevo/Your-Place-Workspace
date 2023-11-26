@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import PlaceItem from "./PlaceItem";
 import Card from "@/app/shared/components/UIElements/Card";
-import Button from "@/app/shared/components/FormElements/Button";
-import { AuthContext } from "@/app/shared/context/auth-context";
+import { useForm } from "@/app/shared/hooks/form-hook";
 
 interface PlaceListProps {
   items: {
@@ -16,11 +15,13 @@ interface PlaceListProps {
       lat: number;
       lng: number;
     };
+    onDeletePlace: (deletedPlaceId: string) => void;
+    onUpdatePlace: (placeId: string) => void; // Add the prop
   }[];
 }
 
 const PlaceList: React.FC<PlaceListProps> = (props) => {
-  const auth = useContext(AuthContext);
+  const { setFormData } = useForm();
 
   if (props.items.length === 0) {
     return (
@@ -45,6 +46,7 @@ const PlaceList: React.FC<PlaceListProps> = (props) => {
           creatorId={place.creator}
           coordinates={place.location}
           onDelete={props.onDeletePlace}
+          onUpdatePlace={(placeId) => showUpdateModalHandler(placeId)}
         />
       ))}
     </ul>

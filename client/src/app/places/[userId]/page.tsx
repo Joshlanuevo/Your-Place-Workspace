@@ -19,7 +19,7 @@ const UserPlacesPage = (props) => {
   const userId = usePathname().split('/').pop();
   const [loadedPlaces, setLoadedPlaces] = useState([]);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [formState, inputHandler] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
         value: '',
@@ -38,6 +38,7 @@ const UserPlacesPage = (props) => {
   );
 
   const [showModal, setShowModal] = useState(false);
+  const [updatePlaceId, setUpdatePlaceId] = useState(null);
 
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -53,11 +54,28 @@ const UserPlacesPage = (props) => {
 
   const openAddPlaceModal = () => {
     setShowModal(true);
+    setUpdatePlaceId(null);
   };
 
   const closeAddPlaceModal = () => {
     setShowModal(false);
+    setUpdatePlaceId(null);
   };
+
+  const showUpdateModalHandler = (place) => {
+    setFormData({
+      title: {
+        value: place.title,
+        isValid: true,
+      },
+      description: {
+        value: place.description,
+        isValid: true,
+      },
+    }, true);
+  
+    setShowModal(true);
+  }
 
   const closeButton = (
     <div>
@@ -68,17 +86,32 @@ const UserPlacesPage = (props) => {
   const placeSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      await sendRequest(
-        'http://localhost:5000/api/places',
-        'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId,
-        }),
-        { 'Content-Type': 'application/json' }
-      );
+      if (updatePlaceId) {
+        // If updatePlaceId is set, it's an update request
+        await sendRequest(
+          `http://localhost:5000/api/places/${updatePlaceId}`,
+          'PATCH',
+          JSON.stringify({
+            title: formState.inputs.title.value,
+            description: formState.inputs.description.value,
+            address: formState.inputs.address.value,
+          }),
+          { 'Content-Type': 'application/json' }
+        );
+      } else {
+        // Otherwise, it's an add new place request
+        await sendRequest(
+          'http://localhost:5000/api/places',
+          'POST',
+          JSON.stringify({
+            title: formState.inputs.title.value,
+            description: formState.inputs.description.value,
+            address: formState.inputs.address.value,
+            creator: auth.userId,
+          }),
+          { 'Content-Type': 'application/json' }
+        );
+      }
       router.push('/');
     } catch (err) {}
   };
@@ -149,7 +182,11 @@ const UserPlacesPage = (props) => {
         </>
       )}
       {!isLoading && loadedPlaces && (
-        <PlaceList items={loadedPlaces} onDeletePlace={placeDeletedHandler} />
+        <PlaceList 
+          items={loadedPlaces} 
+          onDeletePlace={placeDeletedHandler} 
+          onUpdatePlace={showUpdateModalHandler}
+        />
       )}
     </>
   );

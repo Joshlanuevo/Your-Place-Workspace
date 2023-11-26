@@ -24,19 +24,18 @@ interface PlaceItemProps {
     lat: number;
     lng: number;
   }; 
+  onUpdate: (placeId: string) => void; 
 }
 
 const PlaceItem: React.FC<PlaceItemProps> = (props) => {
   const auth = useContext(AuthContext);
   const router = useRouter();
-  const placeId = usePathname().split('/').pop();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlace, setLoadedPlace] = useState();
   const [showMap, setShowMap] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const [formState, inputHandler, setFormData] = useForm(
+  const [formState, inputHandler] = useForm(
     {
       title: {
         value: '',
@@ -59,6 +58,20 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
 
   const placeUpdateSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/places/${placeId}`,
+        'PATCH',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      router.push('/' + auth.userId + '/places');
+    } catch (err) {}
   };
   const cancelUpdateModalHandler = () => {
     setShowUpdateModal(false);
@@ -178,7 +191,7 @@ const PlaceItem: React.FC<PlaceItemProps> = (props) => {
               VIEW ON MAP
             </Button>
             {auth.userId === props.creatorId && (
-              <Button secondary onClick={showUpdateModalHandler}>EDIT</Button>
+              <Button secondary onClick={() => props.onUpdate(props.id)}>EDIT</Button>
             )}
             {auth.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
