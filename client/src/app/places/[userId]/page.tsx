@@ -86,41 +86,26 @@ const UserPlacesPage = (props) => {
   const placeSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      if (updatePlaceId) {
-        // If updatePlaceId is set, it's an update request
-        await sendRequest(
-          `http://localhost:5000/api/places/${updatePlaceId}`,
-          'PATCH',
-          JSON.stringify({
-            title: formState.inputs.title.value,
-            description: formState.inputs.description.value,
-            address: formState.inputs.address.value,
-          }),
-          { 'Content-Type': 'application/json' }
-        );
-      } else {
-        // Otherwise, it's an add new place request
-        await sendRequest(
-          'http://localhost:5000/api/places',
-          'POST',
-          JSON.stringify({
-            title: formState.inputs.title.value,
-            description: formState.inputs.description.value,
-            address: formState.inputs.address.value,
-            creator: auth.userId,
-          }),
-          { 'Content-Type': 'application/json' }
-        );
-      }
-      router.push('/');
+      await sendRequest(
+        'http://localhost:5000/api/places',
+        'POST',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          address: formState.inputs.address.value,
+          creator: auth.userId
+        }),
+        { 'Content-Type': 'application/json' }
+      );
+      history.push('/');
     } catch (err) {}
   };
 
-    const placeDeletedHandler = deletedPlaceId => {
-    setLoadedPlaces(prevPlaces =>
-      prevPlaces.filter(place => place.id !== deletedPlaceId)
-    );
-  };
+  //   const placeDeletedHandler = deletedPlaceId => {
+  //   setLoadedPlaces(prevPlaces =>
+  //     prevPlaces.filter(place => place.id !== deletedPlaceId)
+  //   );
+  // };
 
   return (
     <>
@@ -185,7 +170,7 @@ const UserPlacesPage = (props) => {
         <PlaceList 
           items={loadedPlaces} 
           onDeletePlace={placeDeletedHandler} 
-          onUpdatePlace={showUpdateModalHandler}
+          // onUpdatePlace={showUpdateModalHandler}
         />
       )}
     </>

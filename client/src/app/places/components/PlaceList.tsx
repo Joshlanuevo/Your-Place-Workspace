@@ -16,7 +16,7 @@ interface PlaceListProps {
       lng: number;
     };
     onDeletePlace: (deletedPlaceId: string) => void;
-    onUpdatePlace: (placeId: string) => void; // Add the prop
+    // onUpdatePlace: (placeId: string) => void;
   }[];
 }
 
@@ -46,7 +46,7 @@ const PlaceList: React.FC<PlaceListProps> = (props) => {
           creatorId={place.creator}
           coordinates={place.location}
           onDelete={props.onDeletePlace}
-          onUpdatePlace={(placeId) => showUpdateModalHandler(placeId)}
+          // onUpdatePlace={(placeId) => showUpdateModalHandler(placeId)}
         />
       ))}
     </ul>
