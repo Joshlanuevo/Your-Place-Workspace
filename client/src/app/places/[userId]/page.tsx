@@ -62,20 +62,20 @@ const UserPlacesPage = (props) => {
     setUpdatePlaceId(null);
   };
 
-  const showUpdateModalHandler = (place) => {
-    setFormData({
-      title: {
-        value: place.title,
-        isValid: true,
-      },
-      description: {
-        value: place.description,
-        isValid: true,
-      },
-    }, true);
+  // const showUpdateModalHandler = (place) => {
+  //   setFormData({
+  //     title: {
+  //       value: place.title,
+  //       isValid: true,
+  //     },
+  //     description: {
+  //       value: place.description,
+  //       isValid: true,
+  //     },
+  //   }, true);
   
-    setShowModal(true);
-  }
+  //   setShowModal(true);
+  // }
 
   const closeButton = (
     <div>
@@ -97,15 +97,15 @@ const UserPlacesPage = (props) => {
         }),
         { 'Content-Type': 'application/json' }
       );
-      history.push('/');
+      router.push('/');
     } catch (err) {}
   };
 
-  //   const placeDeletedHandler = deletedPlaceId => {
-  //   setLoadedPlaces(prevPlaces =>
-  //     prevPlaces.filter(place => place.id !== deletedPlaceId)
-  //   );
-  // };
+    const placeDeletedHandler = deletedPlaceId => {
+    setLoadedPlaces(prevPlaces =>
+      prevPlaces.filter(place => place.id !== deletedPlaceId)
+    );
+  };
 
   return (
     <>
