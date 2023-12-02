@@ -112,45 +112,53 @@ const AuthForm = () => {
                   YourPlace
               </span>
         </h1>
-        <hr className="mb-4" style={{ borderColor: 'gray' }} />
-        <form onSubmit={authSubmitHandler}>
+        <hr className="mb-6" style={{ borderColor: 'gray' }} />
+        <form className="mx-auto max-w-md" onSubmit={authSubmitHandler}>
             {!isLoginMode && (
-            <Input
+              <div className="mb-4">
+                <Input
+                    element="input"
+                    id="name"
+                    type="text"
+                    label="Your Name"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    errorText="Please enter a name."
+                    onInput={inputHandler}
+                />
+            </div>
+            )}
+            {!isLoginMode && (
+              <div className="mb-4">
+                <ImageUpload 
+                  center
+                  id="image" 
+                  onInput={inputHandler} 
+                  errorText="Please provide an image."
+                />
+              </div>
+            )}
+            <div className="mb-4">
+              <Input
                 element="input"
-                id="name"
-                type="text"
-                label="Your Name"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter a name."
+                id="email"
+                type="email"
+                label="E-Mail"
+                validators={[VALIDATOR_EMAIL()]}
+                errorText="Please enter a valid email address."
                 onInput={inputHandler}
-            />
-            )}
-            {!isLoginMode && (
-              <ImageUpload 
-                center
-                id="image" 
-                onInput={inputHandler} 
-                errorText="Please provide an image."
               />
-            )}
-            <Input
-            element="input"
-            id="email"
-            type="email"
-            label="E-Mail"
-            validators={[VALIDATOR_EMAIL()]}
-            errorText="Please enter a valid email address."
-            onInput={inputHandler}
-            />
-            <Input
-            element="input"
-            id="password"
-            type="password"
-            label="Password"
-            validators={[VALIDATOR_MINLENGTH(6)]}
-            errorText="Please enter a valid password, at least 5 characters."
-            onInput={inputHandler}
-            />
+            </div>
+            <div className="mb-4">
+              <Input
+                element="input"
+                id="password"
+                type="password"
+                label="Password"
+                validators={[VALIDATOR_MINLENGTH(6)]}
+                errorText="Please enter a valid password, at least 5 characters."
+                onInput={inputHandler}
+              />
+            </div>
             <Button 
                 type="submit" 
                 disabled={!formState.isValid} 
