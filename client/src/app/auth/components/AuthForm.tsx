@@ -34,7 +34,8 @@ const AuthForm = () => {
         setFormData(
           {
             ...formState.inputs,
-            name: undefined
+            name: undefined,
+            image: undefined
           },
           formState.inputs.email.isValid && formState.inputs.password.isValid
         );
@@ -44,6 +45,10 @@ const AuthForm = () => {
             ...formState.inputs,
             name: {
               value: '',
+              isValid: false
+            },
+            image: {
+              value: null,
               isValid: false
             }
           },
@@ -55,6 +60,8 @@ const AuthForm = () => {
 
     const authSubmitHandler = async (event: React.FormEvent) => {
       event.preventDefault();
+
+      console.log(formState.inputs);
     
       if (isLoginMode) {
         try {
@@ -118,7 +125,14 @@ const AuthForm = () => {
                 onInput={inputHandler}
             />
             )}
-            {!isLoginMode && <ImageUpload id="image" />}
+            {!isLoginMode && (
+              <ImageUpload 
+                center
+                id="image" 
+                onInput={inputHandler} 
+                errorText="Please provide an image."
+              />
+            )}
             <Input
             element="input"
             id="email"
